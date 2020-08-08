@@ -34,11 +34,7 @@ spell=Speller(fast=True)
 # Pre-processing Test
 tweets = df_copy['tweet']
 tweets_copy = tweets
-# b=[]
-# for tweet in tweets_copy:
-#     b.append(''.join(re.sub("(@[A-Za-z0–9]+)|([0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split()))
-#     tweet = ''.join([i for i in tweet if not i in b])
-#     print(tweet)
+
 def remove_emoji(string):
     emoticons = re.compile("["
                            u"\U0001F600-\U0001F64F"  
@@ -49,14 +45,14 @@ def remove_emoji(string):
                            u"\U000024C2-\U0001F251"
                            "]+", flags=re.UNICODE)
     return emoticons.sub(r'', string)
-def strip_links(text):
+def remove_urls(text):
     link_regex    = re.compile('((https?):((//)|(\\\\))+([\w\d:#@%/;$()~_?\+-=\\\.&](#!)?)*)', re.DOTALL)
     links         = re.findall(link_regex, text)
     for link in links:
         text = text.replace(link[0], ', ')
     return text
 
-def strip_all_entities(text):
+def remove_tag_hash(text):
     entity_prefixes = ['@','#']
     for separator in  string.punctuation:
         if separator not in entity_prefixes :
@@ -72,7 +68,7 @@ a=[]
 for tweet in tweets:
     tweet = re.sub(r"\d", "", tweet) # Removing digits
     tweet = ' '.join([spell(word) for word in tweet.split()])
-    a.append(remove_emoji(strip_all_entities(strip_links(tweet))))
+    a.append(remove_emoji(remove_tag_hash(remove_urls(tweet))))
     # ' '.join(re.sub("([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
 
 print(a)
