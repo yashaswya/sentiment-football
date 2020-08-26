@@ -136,14 +136,14 @@ class Swn:
                 else:
                     tweet_sentiment = "neutral"
                 analysis_result_tweet["tweet_words_scores"] = tweet_words_scores
-                analysis_result_tweet["basic_avg_sentiment_score"] = str(tweet_sentiment_score)
-                analysis_result_tweet["basic_avg_sentiment"] = tweet_sentiment
+                analysis_result_tweet["sentiment_score"] = str(tweet_sentiment_score)
+                analysis_result_tweet["bsentiment"] = tweet_sentiment
                 sentiment_analysis_results.append(analysis_result_tweet)
                 analysis_results_to_plot.append(str(tweet_sentiment_score))
             print("Tweet: " + str(c_tweet) + " -> [" + str(tweet_sentiment) + ", " + "{:1.6f}".format(
                 tweet_sentiment_score) + "]")
 
-        with open('basic_avg_sentiment_scores.txt', 'w') as f:
+        with open('swn_scores.txt', 'w') as f:
             f.write(str(analysis_results_to_plot))
         return sentiment_analysis_results
 
@@ -155,7 +155,7 @@ print(df.head())
 raw_tweet = df['tweet']
 cleaned_tweets = df['cleaned_tweets']
 print("Sentiment Analysis")
-basic_avg_analysis_result = analyze.sentiment_analysis(raw_tweet, cleaned_tweets)
-basic = pd.DataFrame(basic_avg_analysis_result)
+analysis_result = analyze.sentiment_analysis(raw_tweet, cleaned_tweets)
+basic = pd.DataFrame(analysis_result)
 basic.to_csv('swn_sentiment.csv')
 
